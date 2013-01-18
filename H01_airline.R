@@ -24,7 +24,33 @@ save("BayAreaDelays.rda")
 
 
 load("BayAreaDelays.rda")
-trim = BayAreaDelays[,c(2,6,9,10,14,23,30,31:32,41:43,48:52,55,57:61)]
+trim = BayAreaDelays[,c(2,6,9,10,15,24,30,31:32,41:43,48:52,55,57:61)]
+
+#####################
+# use of airports
+#####################
+
+table(trim$ORIGIN)
+table(trim$DEST)
+trim = transform(trim, inbound =  trim$DEST %in% c("SFO","OAK","SMF"), outbound = trim$ORIGIN %in% c("SFO","OAK","SMF"))	#  inbound vs outbound.
+latelimit = 30
+trim$isLate = (trim$inbound == TRUE & trim$ARR_DELAY > latelimit) | (trim$outbound == TRUE & trim$DEP_DELAY > latelimit )
+tapply(trim$isLate, trim$DEST , sum,na.rm = TRUE) / tapply(trim$isLate, trim$DEST , length)  
+
+
+###############
+# how late are most of the late planes"
+###################
+
+late = function(late) {
+	trim$isLate = (trim$inbound == TRUE & trim$ARR_DELAY > late) | (trim$outbound == TRUE & trim$DEP_DELAY > late )
+	lp = sum(trim$isLate,na.rm = TRUE)/length(trim$isLate)
+	return(lp)
+}
+
+llist = seq(0,180,15)
+sapply(llist,late)
+
 
 ##################33
 # delay by carrier
@@ -38,7 +64,7 @@ boxplot(trim$DEP_DELAY ~ trim$CARRIER)	# prob most useful
 qplot(delayed$dat, color=delayed$CARRIER, geom = "density")
 
 #######################
-# delay by tim of year
+# delay by time of year
 #######################3
 
 #delay vary by time of year,?
