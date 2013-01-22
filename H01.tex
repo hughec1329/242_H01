@@ -4,6 +4,51 @@
 \author{Hugh Crockford}
 \date{\today}
 \begin{document}
-	\section{Bay Area Flight Delays - Exploratory Data Analysis}
-		yada
+	\maketitle
+	\tableofcontents
+	\clearpage
+	\section{Late Flights - by airline }
+	\subsection{Q: What airports are the worst for on time performance?}
+		Examining a which airports are worst for on time performance may be useful to see if there are any airports or areas which are consistently poor performers.
+		\begin{figure}[h!b]
+			\centering
+			\includegraphics[scale=0.5]{pcl_airport.jpg}
+			\caption{Percent flights that are late ( +- > 30 min) by airport. }
+		\end{figure}
+		This barplot is difficult to interpert and due to the short timeframe of data collection may miss 
+	\newpage
+	\subsection{Q: Is there a relationship between airport location and on time performance?}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.5]{latemap.jpg}
+			\caption{Map showing location of airport}
+		\end{figure}
+		The above figure shows the regional hubs are the worst for on time performance, which is to be expected as they are most likely to suffer the effects of concertina like accumulation of delays.
+	\newpage
+	\subsection{Q: Which airlines are the worst for on time performance?}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{lateCar.jpg}
+		\caption{Late flights ( +- >30 min ) by carrier}
+	\end{figure}
+	The Above figure shows a ranking of airlines by on time percentage.
+	I then wanted to investigate if this measure of performance is affected by the threshold chosen.
+	\newpage
+	\subsection{Q: is the on time performance affected by cutoff value chosen (are some airlines always only a little late while others, if late, are late by a lot?)}
+	\newpage
+	\section {Late flights - by time of year}
+		\ subsection{Q: Is there a pattern of delays throughout the year?}
+			I wodered if there were more delays in winter due to inclement weather.
+		 	\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=0.5]{delaydate.jpg}
+				\caption{Percent of flight delayed, by time of year}
+			\end{figure}
+			\newpage
+		\subsection{Q: Is there more weather delays in winter?}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.5]{weather.jpg}
+			\caption{Patterns of delay reason - more weather delays in winter?}
+		\end{figure}
 \end{document}
