@@ -78,14 +78,68 @@ dev.off()
 ###################
 
 late = function(late) {
-	trim$isLate = (trim$inbound == TRUE & trim$ARR_DELAY > late) | (trim$outbound == TRUE & trim$DEP_DELAY > late )
-	lp = sum(trim$isLate,na.rm = TRUE)/length(trim$isLate)
+	isLate = (trim$inbound == TRUE & trim$ARR_DELAY > late) | (trim$outbound == TRUE & trim$DEP_DELAY > late )
+	lp = sum(isLate,na.rm = TRUE)/length(isLate)
 	return(lp)
 }
 
-llist = seq(0,180,15)
-sapply(llist,late)
+llist = seq(0,600,30)
+lateness = sapply(llist,late)
+jpeg("lateness.jpg")
+plot(llist,lateness,type = "b", main = "percent of planes late by various cutoffs", xlab = "late time cutoff", ylab = "percent late")
+dev.off()
 
+
+late2 = function(varb,late) {
+	trim$isLate = (trim$inbound == TRUE & trim$ARR_DELAY > late) | (trim$outbound == TRUE & trim$DEP_DELAY > late )
+	late = tapply(trim$isLate, trim[[varb]] , sum,na.rm = TRUE) / tapply(trim$isLate, trim[[varb]] , length)  
+	return(late)
+}
+
+l = sapply(c("CARRIER","DEST","ORIGIN"),function(x) mapply(late2,x,seq(60,360,60)))
+ld =lapply(l,data.frame)
+lapply(ld,function(i) names(i) = seq(60,360,60))	# didnt work?
+n = seq(60,360,60)
+names(ld$CARRIER) = n
+names(ld$DEST) = n
+names(ld$ORIGIN) = n
+
+# need a better way of plotting this, but catagorical makes hard- 3d barplot?
+
+jpeg("ltcarrier.jpg")
+y=ld$CARRIER
+y = t(y)
+# sapply(1:14,function(i) lines(1:6,y[,i]))	# couldnt get to work, lattice? ggplot?
+cutoff=n
+plot(cutoff, y[,1],type = "b",main = "lateness by carrier with different late cutoffs", ylab = "percent late")
+lines(cutoff,y[,2])
+lines(cutoff,y[,3])
+lines(cutoff,y[,4])
+lines(cutoff,y[,5])
+lines(cutoff,y[,6])
+lines(cutoff,y[,7])
+lines(cutoff,y[,8])
+dev.off()
+
+jpeg("ltdest.jpg")
+y=ld$DEST
+i=t(y)
+r=i[,c("SFO","SMF","OAK")]
+cutoff=n
+plot(cutoff, r[,1],type = "b",main = "lateness by destination airport (for SFO, SMF, OAK) by different late cutoffs")
+llines(cutoff,r[,2],col="red")
+lines(cutoff,r[,3],col = "blue")
+dev.off()
+
+jpeg("ltorig.jpg")
+y=ld$ORIGIN
+i=t(y)
+r=i[,c("SFO","SMF","OAK")]
+cutoff=n
+plot(cutoff, r[,1],type = "b", main = "lateness by origin airport (for SFO, SMF, OAK) by different late cutoffs")
+lines(cutoff,r[,2],col = "red")
+lines(cutoff,r[,3], col = "blue")
+dev.off()
 
 ##################33
 # delay by carrier
@@ -139,4 +193,4 @@ trim = transform(trim, inbound =  trim$DEST %in% c("SFO","OAK","SMF"), outbound 
 
 
 # add in weather data - Rcurl fill form to source data?
-## do like thi grant - cumulative days of shit weather, wind above threshold, test diff thresholds.
+## do like thi - cumulative days of shit weather, wind above threshold, test diff thresholds.

@@ -34,8 +34,6 @@
 	The Above figure shows a ranking of airlines by on time percentage.
 	I then wanted to investigate if this measure of performance is affected by the threshold chosen.
 	\newpage
-	\subsection{Q: is the on time performance affected by cutoff value chosen (are some airlines always only a little late while others, if late, are late by a lot?)}
-	\newpage
 	\section {Late flights - by time of year}
 		\ subsection{Q: Is there a pattern of delays throughout the year?}
 			I wodered if there were more delays in winter due to inclement weather.
@@ -51,4 +49,43 @@
 			\includegraphics[scale=0.5]{weather.jpg}
 			\caption{Patterns of delay reason - more weather delays in winter?}
 		\end{figure}
+	\section{Late flights - effect of cutoff value.}
+		\subsection{Q: Does late time cutoff affect percent planes late}
+		The relationship between cutoff for flight delays and percent delayed by various groups was examined.\\
+		This investigation may reveal some airlines/airports which are often late by only a little and others that are rarely late, but when they are planes miss their scheduled departure/arrival time by a large margin.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{lateness.jpg}
+			\caption{Percent of planes late by various cutoffs}
+		\end{figure}
+		The above figure shows the expected relationship between late time cutoff (both arriving and departing), and the percent of late planes, i.e as the late time cutoff is increased, there are less planes classified as late.
+	\newpage
+		\subsection{Q: do different airlines/airports perform better under different late cutoff points}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{ltcarrier.jpg}
+			\caption{Plot of lateness by carrier, for different late cutoffs.}
+		\end{figure}
+		The above figure shows there is a relationship between different airlines and the effects of lateness cutoff. \\
+		( I was unable to plot this to my satisfaction, please see code)
+
+	\newpage
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{ltdest.jpg}
+			\caption{Plot of lateness by destination airport, for different late cutoffs.}
+		\end{figure}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{ltorig.jpg}
+			\caption{Plot of lateness by origin airport, for different late cutoffs.}
+		\end{figure}
+		The above figure shows there is a relationship between the destination and origin airport, and the effects of lateness cutoff		
+	\newpage
+	\section{CODE]
+		\begin{verbatim}
+			
+		\end{verbatim}
+
 \end{document}
