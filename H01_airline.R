@@ -90,7 +90,7 @@ plot(llist,lateness,type = "b", main = "percent of planes late by various cutoff
 dev.off()
 
 
-late2 = function(varb,late) {
+late3 = function(varb,late) {
 	trim$isLate = (trim$inbound == TRUE & trim$ARR_DELAY > late) | (trim$outbound == TRUE & trim$DEP_DELAY > late )
 	late = tapply(trim$isLate, trim[[varb]] , sum,na.rm = TRUE) / tapply(trim$isLate, trim[[varb]] , length)  
 	return(late)
@@ -98,7 +98,7 @@ late2 = function(varb,late) {
 
 l = sapply(c("CARRIER","DEST","ORIGIN"),function(x) mapply(late2,x,seq(60,360,60)))
 ld =lapply(l,data.frame)
-lapply(ld,function(i) names(i) = seq(60,360,60))	# didnt work?
+# lapply(ld,function(i) names(i) = seq(60,360,60))	# didnt work?
 n = seq(60,360,60)
 names(ld$CARRIER) = n
 names(ld$DEST) = n
@@ -109,6 +109,7 @@ names(ld$ORIGIN) = n
 jpeg("ltcarrier.jpg")
 y=ld$CARRIER
 y = t(y)
+o = melt(y)
 # sapply(1:14,function(i) lines(1:6,y[,i]))	# couldnt get to work, lattice? ggplot?
 cutoff=n
 plot(cutoff, y[,1],type = "b",main = "lateness by carrier with different late cutoffs", ylab = "percent late")
@@ -121,24 +122,33 @@ lines(cutoff,y[,7])
 lines(cutoff,y[,8])
 dev.off()
 
+
+jpeg("ltcarrier.jpg")	#much easier w ggplot!
+y=ld$CARRIER
+y = t(y)
+o = melt(y)
+rank(y[1,])	# rank of HA at cutoff = 60.
+rank(y[6,])	# rank of HA at cutoff = 360.
+y[6,7]/mean(y[6,])
+carriers[carriers$Code == "HA",]	# ID HA as hawiaan air.
+qplot(X1,value , color = X2,data = o,type = "b",geom="path",main = "percent planes delayed by carrier for various cutoffs of late", xlab = "late cutoff", ylab = "Percent late")		
+dev.off()
+
+
 jpeg("ltdest.jpg")
 y=ld$DEST
 i=t(y)
 r=i[,c("SFO","SMF","OAK")]
-cutoff=n
-plot(cutoff, r[,1],type = "b",main = "lateness by destination airport (for SFO, SMF, OAK) by different late cutoffs")
-llines(cutoff,r[,2],col="red")
-lines(cutoff,r[,3],col = "blue")
+o = melt(r)
+qplot(X1,value,data=o, color = X2,geom = "line",main = "lateness by destination airport (for SFO, SMF, OAK) by different late cutoffs")
 dev.off()
 
 jpeg("ltorig.jpg")
 y=ld$ORIGIN
 i=t(y)
 r=i[,c("SFO","SMF","OAK")]
-cutoff=n
-plot(cutoff, r[,1],type = "b", main = "lateness by origin airport (for SFO, SMF, OAK) by different late cutoffs")
-lines(cutoff,r[,2],col = "red")
-lines(cutoff,r[,3], col = "blue")
+o = melt(r)
+qplot(X1,value,data=o, color = X2,geom = "line",main = "lateness by origin airport (for SFO, SMF, OAK) by different late cutoffs")
 dev.off()
 
 ##################33
