@@ -1,8 +1,9 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
+\usepackage{listings}
 \title{STA242 - H01}
 \author{Hugh Crockford}
-\date{\today}
+\date{January 20,2013}
 \begin{document}
 	\maketitle
 	\tableofcontents
@@ -32,7 +33,7 @@
 	\end{figure}
 	The Above figure shows a ranking of airlines by on time percentage.
 	An investigation of the effect of lateness threshold on on time performance follows in section 3.
-	\newpage 
+ 	\newpage 
 	\section{Late flights - by time of year}
 		\subsection{Q: Is there a pattern of delays throughout the year?}
 			An investigation into the seasonal pattern of delays, and the reason for the delays follows.
@@ -82,3 +83,5 @@
 		\end{figure}
 	\clearpage
 	\section{CODE}
+	\lstinputlisting[breaklines=true]{``H01\_airline.R''}
+\end{document}
